@@ -1,0 +1,10 @@
+*.hex
+*.o
+*.elf
+*.eep
+build-*/
+/__vm/
+.vs/
+Debug/
+*.sln
+*.vcxproj*
