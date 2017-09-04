@@ -3,6 +3,7 @@
 *.elf
 *.eep
 *.suo
+*.old
 build-*/
 /__vm/
 .vs/

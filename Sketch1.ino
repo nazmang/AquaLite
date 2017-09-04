@@ -17,6 +17,8 @@
 #define MY_RF24_CE_PIN 49
 #define MY_RF24_CS_PIN 53
 
+#define INVERSE_LOGIC
+
  // Enabled repeater feature for this node
  //#define MY_REPEATER_FEATURE
 
@@ -48,7 +50,10 @@
 
 class Relay {
 public:
-	Relay(uint8_t pin, uint8_t address) : _pin(pin), _address(address) { _state = 0; };
+	Relay(uint8_t pin, uint8_t address) : _pin(pin), _address(address) { 
+		_state = 0; 
+		//_msg = new MyMessage(_address, V_STATUS);
+	};
 
 	void begin() {
 		pinMode(_pin, OUTPUT);
@@ -80,6 +85,7 @@ private:
 	uint8_t _pin;
 	uint8_t _address;
 	bool _state;
+	//MyMessage* _msg;
 };
 
 
@@ -95,10 +101,10 @@ unsigned long lastRequest = 0;
 //bool state1, state2, state3, state4;
 //bool cur_state;
 
-MyMessage msg(CHILD_ID_RELAY1, V_STATUS);
+/*MyMessage msg(CHILD_ID_RELAY1, V_STATUS);
 MyMessage msg2(CHILD_ID_RELAY2, V_STATUS);
 MyMessage msg3(CHILD_ID_RELAY3, V_STATUS);
-MyMessage msg4(CHILD_ID_RELAY4, V_STATUS);
+MyMessage msg4(CHILD_ID_RELAY4, V_STATUS);*/
 
 Relay r1(RELAY1_PIN, CHILD_ID_RELAY1);
 Relay r2(RELAY2_PIN, CHILD_ID_RELAY2);
@@ -144,7 +150,10 @@ void receiveTime(unsigned long controllerTime) {
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-	
+#ifndef MY_DEBUG
+	Serial.begin(115200);
+#endif // !MY_DEBUG
+
 	// the function to get the time from the RTC
 	setSyncProvider(RTC.get);
 	
@@ -248,12 +257,18 @@ void receive(const MyMessage &message) {
 		Serial.print("\nIncoming change for sensor: ");
 		Serial.print(message.sensor);
 		Serial.print(", New status: ");
+#ifdef INVERSE_LOGIC
+		Serial.println(!message.getBool());
+#else
 		Serial.println(message.getBool());
-
+#endif
 		switch (message.sensor) {
 
 		case CHILD_ID_RELAY1: {
 			prevState = r1.getState();
+#ifdef INVERSE_LOGIC
+			prevState = !prevState;
+#endif	
 			newState = message.getBool();
 			// Change relay state
 			if (newState != prevState) {
@@ -263,6 +278,9 @@ void receive(const MyMessage &message) {
 		}
 		case CHILD_ID_RELAY2: {
 			prevState = r2.getState();
+#ifdef INVERSE_LOGIC
+			prevState = !prevState;
+#endif
 			newState = message.getBool();
 			// Change relay state
 			if (newState != prevState) {
@@ -272,6 +290,9 @@ void receive(const MyMessage &message) {
 		}
 		case CHILD_ID_RELAY3: {
 			prevState = r3.getState();
+#ifdef INVERSE_LOGIC
+			prevState = !prevState;
+#endif
 			newState = message.getBool();
 			// Change relay state
 			if (newState != prevState) {
@@ -281,6 +302,9 @@ void receive(const MyMessage &message) {
 		}
 		case CHILD_ID_RELAY4: {
 			prevState = r4.getState();
+#ifdef INVERSE_LOGIC
+			prevState = !prevState;
+#endif
 			newState = message.getBool();
 			// Change relay state
 			if (newState != prevState) {
