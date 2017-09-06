@@ -52,31 +52,35 @@ class Relay {
 public:
 	Relay(uint8_t pin, uint8_t address) : _pin(pin), _address(address) { 
 		_state = 0; 
-		//_msg = new MyMessage(_address, V_STATUS);
+		_msg = new MyMessage(_address, V_STATUS);
 	};
 
 	void begin() {
 		pinMode(_pin, OUTPUT);
 		digitalWrite(_pin, RELAY_OFF);
 		_state = loadState(_address);
-		digitalWrite(_pin, _state ? RELAY_ON : RELAY_OFF);
+		digitalWrite(_pin, _state ? RELAY_ON : RELAY_OFF);		
 	};
 	bool proceed(long start_time, long duration) {
 		long cur_time = elapsedSecsToday(RTC.get());
 		if ((cur_time >= start_time) && cur_time < (start_time + duration) && _state == RELAY_OFF) {
 			this->on();
-			return _state;
+			
 		}
+		else { off(); }
+		return _state;
 	};
 	void on() {
 		digitalWrite(_pin, RELAY_ON);
 		_state = RELAY_ON;
 		saveState(_address, RELAY_ON);
+		//send(_msg->set(_state ? true : false), true);
 	};
 	void off() {
 		digitalWrite(_pin, RELAY_OFF);
 		_state = RELAY_OFF;
 		saveState(_address, RELAY_OFF);
+		//send(_msg->set(_state ? true : false), true);
 	};
 	bool getState() { return _state; };
 	bool getAddr() { return _address; };
@@ -85,7 +89,7 @@ private:
 	uint8_t _pin;
 	uint8_t _address;
 	bool _state;
-	//MyMessage* _msg;
+	MyMessage* _msg;
 };
 
 
@@ -235,13 +239,14 @@ void loop() {
 	r1.proceed(filter_time, filter_duration);
 	r2.proceed(co2_time, co2_duration);
 	r3.proceed(oxygen_time, oxygen_duration);
-
+	r4.proceed(oxygen_time, oxygen_duration);
 	/*send(msg.set(state1 ? true : false), true);
 	send(msg2.set(state2 ? true : false), true);
 	send(msg3.set(state3 ? true : false), true);
 	send(msg4.set(state4 ? true : false), true);*/	
 	
-	smartSleep(1000);
+	wait(1000);
+	sendHeartbeat();
 }
 
 void receive(const MyMessage &message) {
@@ -249,7 +254,7 @@ void receive(const MyMessage &message) {
 	// We only expect one type of message from controller. But we better check anyway.
 	if (message.isAck()) {
 	Serial.println("This is an ack from gateway");
-
+	return;
 	}
 
 	if (message.type == V_STATUS) {
