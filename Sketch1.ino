@@ -67,7 +67,7 @@ public:
 			this->on();
 			
 		}
-		else { off(); }
+		if { off(); }
 		return _state;
 	};
 	void on() {
@@ -245,7 +245,7 @@ void loop() {
 	send(msg3.set(state3 ? true : false), true);
 	send(msg4.set(state4 ? true : false), true);*/	
 	
-	wait(1000);
+	smartSleep(1000);
 	sendHeartbeat();
 }
 
