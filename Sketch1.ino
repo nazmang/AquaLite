@@ -48,6 +48,8 @@
 #define RELAY_OFF 0
 #endif // INVERSE_LOGIC
 
+long cur_time = 0;
+
 class Relay {
 public:
 	Relay(uint8_t pin, uint8_t address) : _pin(pin), _address(address) { 
@@ -62,25 +64,33 @@ public:
 		digitalWrite(_pin, _state ? RELAY_ON : RELAY_OFF);		
 	};
 	bool proceed(long start_time, long duration) {
-		long cur_time = elapsedSecsToday(RTC.get());
+		
+		if (cur_time == 0) { return 0; }
 		if ((cur_time >= start_time) && cur_time < (start_time + duration) && _state == RELAY_OFF) {
 			this->on();
 			
 		}
-		if { off(); }
+		else if (_state == RELAY_ON) { this->off(); }
 		return _state;
 	};
 	void on() {
 		digitalWrite(_pin, RELAY_ON);
 		_state = RELAY_ON;
 		saveState(_address, RELAY_ON);
-		//send(_msg->set(_state ? true : false), true);
+		Serial.print("Relay: ");
+		Serial.print(_address);
+		Serial.println(" is ON");
+
+		send(_msg->set(_state ? RELAY_ON : RELAY_OFF), true);
 	};
 	void off() {
 		digitalWrite(_pin, RELAY_OFF);
 		_state = RELAY_OFF;
 		saveState(_address, RELAY_OFF);
-		//send(_msg->set(_state ? true : false), true);
+		Serial.print("Relay: ");
+		Serial.print(_address);
+		Serial.println(" is OFF");
+		send(_msg->set(_state ? RELAY_ON : RELAY_OFF), true);
 	};
 	bool getState() { return _state; };
 	bool getAddr() { return _address; };
@@ -236,6 +246,7 @@ void loop() {
 		lastRequest = now;
 	}
 
+	cur_time = elapsedSecsToday(RTC.get());
 	r1.proceed(filter_time, filter_duration);
 	r2.proceed(co2_time, co2_duration);
 	r3.proceed(oxygen_time, oxygen_duration);
@@ -252,11 +263,11 @@ void loop() {
 void receive(const MyMessage &message) {
 	bool prevState, newState;
 	// We only expect one type of message from controller. But we better check anyway.
-	if (message.isAck()) {
+	/*if (message.isAck()) {
 	Serial.println("This is an ack from gateway");
 	return;
-	}
-
+	}*/
+	
 	if (message.type == V_STATUS) {
 		// Write some debug info
 		Serial.print("\nIncoming change for sensor: ");
@@ -267,7 +278,7 @@ void receive(const MyMessage &message) {
 #else
 		Serial.println(message.getBool());
 #endif
-		switch (message.sensor) {
+	/*	switch (message.sensor) {
 
 		case CHILD_ID_RELAY1: {
 			prevState = r1.getState();
@@ -318,6 +329,6 @@ void receive(const MyMessage &message) {
 			break;
 		}
 
-		}		
+		}		*/
 	}
 }
