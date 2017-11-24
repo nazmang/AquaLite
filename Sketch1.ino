@@ -21,8 +21,6 @@
 #define MY_RF24_CE_PIN 49
 #define MY_RF24_CS_PIN 53
 
-#define INVERSE_LOGIC
-
  // Enabled repeater feature for this node
  //#define MY_REPEATER_FEATURE
 
@@ -44,13 +42,9 @@
 #define CHILD_ID_RELAY3 3	
 #define CHILD_ID_RELAY4 4
 
-#ifdef INVERSE_LOGIC
-#define RELAY_ON 0
-#define RELAY_OFF 1
-#else
 #define RELAY_ON 1
 #define RELAY_OFF 0
-#endif // INVERSE_LOGIC
+
 
 long cur_time = 0;
 
@@ -67,15 +61,7 @@ public:
 		Serial.print("Relay: ");
 		Serial.print(_address);
 		Serial.print(" .Loading previous state: ");
-		Serial.println(_state);
-#ifdef INVERSE_LOGIC
-		//digitalWrite(_pin, _state ? RELAY_OFF : RELAY_ON);
-		_state ? off() : on();
-#else
-		_state ? on() : off();
-		//digitalWrite(_pin, _state ? RELAY_ON : RELAY_OFF);
-#endif
-				
+		Serial.println(_state);	
 	};
 
 	bool proceed(long start_time, long duration) {
@@ -281,18 +267,12 @@ void receive(const MyMessage &message) {
 		Serial.print("\nIncoming change for sensor: ");
 		Serial.print(message.sensor);
 		Serial.print(", New status: ");
-#ifdef INVERSE_LOGIC
-		Serial.println(!message.getBool());
-#else
 		Serial.println(message.getBool());
-#endif
+
 		switch (message.sensor) {
 
 		case CHILD_ID_RELAY1: {
 			prevState = r1.getState();
-#ifdef INVERSE_LOGIC
-			prevState = !prevState;
-#endif	
 			newState = message.getBool();
 			// Change relay state
 			//if (newState != prevState) {
@@ -302,9 +282,6 @@ void receive(const MyMessage &message) {
 		}
 		case CHILD_ID_RELAY2: {
 			prevState = r2.getState();
-#ifdef INVERSE_LOGIC
-			prevState = !prevState;
-#endif
 			newState = message.getBool();
 			// Change relay state
 			//if (newState != prevState) {
@@ -314,9 +291,6 @@ void receive(const MyMessage &message) {
 		}
 		case CHILD_ID_RELAY3: {
 			prevState = r3.getState();
-#ifdef INVERSE_LOGIC
-			prevState = !prevState;
-#endif
 			newState = message.getBool();
 			// Change relay state
 			//if (newState != prevState) {
@@ -326,9 +300,6 @@ void receive(const MyMessage &message) {
 		}
 		case CHILD_ID_RELAY4: {
 			prevState = r4.getState();
-#ifdef INVERSE_LOGIC
-			prevState = !prevState;
-#endif
 			newState = message.getBool();
 			// Change relay state
 			//if (newState != prevState) {
