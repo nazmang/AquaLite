@@ -112,7 +112,7 @@ public:
 	};
 
 	bool getState() { return _state; };
-	void sendState(bool ack = true) { 
+	void sendState(bool ack = false) { 
 		wait(20);
 		if (send(_msg->set(_state ? RELAY_ON : RELAY_OFF), ack) == false)
 		{
@@ -271,11 +271,12 @@ void loop() {
 void receive(const MyMessage &message) {
 	bool prevState, newState;
 	// We only expect one type of message from controller. But we better check anyway.
-	if (message.isAck()) {
+	/*if (message.isAck()) {
 	Serial.println("This is an ack from gateway");
 	return;
 	}
-	
+	*/
+	if (message.sensor == MY_NODE_ID) {}
 	if (message.type == V_STATUS) {
 		// Write some debug info
 		Serial.print("\nIncoming change for sensor: ");
