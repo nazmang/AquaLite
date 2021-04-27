@@ -4,6 +4,7 @@
 *.eep
 *.suo
 *.old
+*.json
 build-*/
 /__vm/
 .vs/
