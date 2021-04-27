@@ -51,7 +51,7 @@
 #define RELAY1_NAME "CO2"
 #endif
 #ifdef CHILD_ID_RELAY2
-#define RELAY2_PIN 36  
+#define RELAY2_PIN 36
 #define RELAY2_NAME "Heater"
 #endif
 #ifdef CHILD_ID_RELAY3

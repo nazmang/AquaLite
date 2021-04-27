@@ -1,17 +1,12 @@
 #include "config.h"
 
-#define DESC_SIZE 25
-
 long cur_time = 0;
 
 class Relay {
 public:
-	Relay(uint8_t pin, uint8_t address, const char *description) : _pin(pin), _address(address) {
+	Relay(uint8_t pin, uint8_t address) : _pin(pin), _address(address) {
 		_state = 0;
-		_msg = new MyMessage(_address, V_STATUS);
-		_description[DESC_SIZE] = {0};
-		strncpy(_description, description, sizeof(_description) - 1);
-    _description[sizeof(_description) - 1] = '\0';
+		_msg = new MyMessage(_address, V_STATUS);		
 	};
 	void begin() {
 		pinMode(_pin, OUTPUT);
@@ -59,7 +54,7 @@ public:
 		_state = RELAY_OFF;
 		saveState(_address, RELAY_OFF);
 		Serial.print("Relay: ");
-		Serial.print(_description);
+		Serial.print(_address);
 		Serial.println(" is OFF");
 		sendState();
 	};
@@ -75,16 +70,10 @@ public:
 
 	}
 	bool getAddr() { return _address; };
-	void setDescr(const char *description) { 
-	  strncpy(_description, description, sizeof(_description) - 1);
-    _description[sizeof(_description) - 1] = '\0';
-	  }
-	char * getDescr() { return _description; } 
-
+	
 private:
 	uint8_t _pin;
 	uint8_t _address;
 	bool _state;
-	MyMessage *_msg;
-	char _description[DESC_SIZE];
+	MyMessage *_msg;	
 };

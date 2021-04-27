@@ -10,29 +10,29 @@
 const uint16_t wait_interval = 60000;
 
 #ifdef CHILD_ID_RELAY1
-Relay r1(RELAY1_PIN, CHILD_ID_RELAY1,RELAY1_NAME);
+Relay r1(RELAY1_PIN, CHILD_ID_RELAY1);
 #endif
 #ifdef CHILD_ID_RELAY2
-Relay r2(RELAY2_PIN, CHILD_ID_RELAY2,RELAY2_NAME);
+Relay r2(RELAY2_PIN, CHILD_ID_RELAY2);
 #endif
 #ifdef CHILD_ID_RELAY3
-Relay r3(RELAY3_PIN, CHILD_ID_RELAY3,RELAY3_NAME);
+Relay r3(RELAY3_PIN, CHILD_ID_RELAY3);
 #endif
 #ifdef CHILD_ID_RELAY4
-Relay r4(RELAY4_PIN, CHILD_ID_RELAY4,RELAY4_NAME);
+Relay r4(RELAY4_PIN, CHILD_ID_RELAY4);
 #endif
 
 #ifdef CHILD_ID_CHANNEL1
-Channel ch1(CHANNEL1_PIN, CHILD_ID_CHANNEL1, "");
+Channel ch1(CHANNEL1_PIN, CHILD_ID_CHANNEL1);
 #endif
 #ifdef CHILD_ID_CHANNEL2
-Channel ch2(CHANNEL2_PIN, CHILD_ID_CHANNEL2, "");
+Channel ch2(CHANNEL2_PIN, CHILD_ID_CHANNEL2);
 #endif
 #ifdef CHILD_ID_CHANNEL3
-Channel ch3(CHANNEL3_PIN, CHILD_ID_CHANNEL3, "");
+Channel ch3(CHANNEL3_PIN, CHILD_ID_CHANNEL3);
 #endif
 #ifdef CHILD_ID_CHANNEL4
-Channel ch4(CHANNEL4_PIN, CHILD_ID_CHANNEL4, "");
+Channel ch4(CHANNEL4_PIN, CHILD_ID_CHANNEL4);
 #endif
 
 #ifdef TEMP_SENSOR
@@ -168,29 +168,29 @@ void presentation() {
 
 	// Register all sensors to gw (they will be created as child devices)
 #ifdef CHILD_ID_RELAY1	
-	present(CHILD_ID_RELAY1, S_BINARY, r1.getDescr());
+	present(CHILD_ID_RELAY1, S_BINARY, RELAY1_NAME);
 #endif	
 #ifdef CHILD_ID_RELAY2	
-	present(CHILD_ID_RELAY2, S_BINARY, r2.getDescr());
+	present(CHILD_ID_RELAY2, S_BINARY, RELAY2_NAME);
 #endif	
 #ifdef CHILD_ID_RELAY3	
-	present(CHILD_ID_RELAY3, S_BINARY, r3.getDescr());
+	present(CHILD_ID_RELAY3, S_BINARY, RELAY3_NAME);
 #endif	
 #ifdef CHILD_ID_RELAY4	
-	present(CHILD_ID_RELAY4, S_BINARY, r4.getDescr());
+	present(CHILD_ID_RELAY4, S_BINARY, RELAY4_NAME);
 #endif	
 
 #ifdef CHILD_ID_CHANNEL1
-	present(CHILD_ID_CHANNEL1, S_DIMMER);
+	present(CHILD_ID_CHANNEL1, S_DIMMER, CHANNEL1_NAME);
 #endif		
 #ifdef CHILD_ID_CHANNEL2	
-	present(CHILD_ID_CHANNEL2, S_DIMMER);
+	present(CHILD_ID_CHANNEL2, S_DIMMER, CHANNEL2_NAME);
 #endif		
 #ifdef CHILD_ID_CHANNEL3	
-	present(CHILD_ID_CHANNEL3, S_DIMMER);
+	present(CHILD_ID_CHANNEL3, S_DIMMER, CHANNEL3_NAME);
 #endif		
 #ifdef CHILD_ID_CHANNEL4	
-	present(CHILD_ID_CHANNEL4, S_DIMMER);
+	present(CHILD_ID_CHANNEL4, S_DIMMER, CHANNEL4_NAME);
 #endif	
 
 #ifdef TEMP_SENSOR	
