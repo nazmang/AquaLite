@@ -12,8 +12,8 @@ public:
 		_state = LIGHT_OFF;
 		_msg = new MyMessage(_address, V_PERCENTAGE);
 		_description[DESC_SIZE] = {0};
-    strncpy(_description, description, sizeof(_description) - 1);
-    _description[sizeof(_description) - 1] = '\0';
+    	strncpy(_description, description, sizeof(_description) - 1);
+    	_description[sizeof(_description) - 1] = '\0';
 	}
 	void begin() {
 		pinMode(_pin, OUTPUT);
@@ -75,8 +75,8 @@ public:
 	uint8_t getValue() { return _value; }
 	bool getAddr() { return _address; };
 	void setDescr(const char *description) { 
-    strncpy(_description, description, sizeof(_description) - 1);
-    _description[sizeof(_description) - 1] = '\0';
+    	strncpy(_description, description, sizeof(_description) - 1);
+    	_description[sizeof(_description) - 1] = '\0';
     }
 	char * getDescr() { return _description; } 
 

@@ -11,7 +11,7 @@ public:
 		_msg = new MyMessage(_address, V_STATUS);
 		_description[DESC_SIZE] = {0};
 		strncpy(_description, description, sizeof(_description) - 1);
-    _description[sizeof(_description) - 1] = '\0';
+        _description[sizeof(_description) - 1] = '\0';
 	};
 	void begin() {
 		pinMode(_pin, OUTPUT);
@@ -76,9 +76,9 @@ public:
 	}
 	bool getAddr() { return _address; };
 	void setDescr(const char *description) { 
-	  strncpy(_description, description, sizeof(_description) - 1);
-    _description[sizeof(_description) - 1] = '\0';
-	  }
+	    strncpy(_description, description, sizeof(_description) - 1);
+        _description[sizeof(_description) - 1] = '\0';
+	}
 	char * getDescr() { return _description; } 
 
 private:
