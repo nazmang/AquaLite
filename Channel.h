@@ -3,14 +3,17 @@
 #define LIGHT_OFF 0
 #define LIGHT_ON 1
 
+#define DESC_SIZE 25
+
 class Channel {
 public:
 	Channel(uint8_t pin, uint8_t address, const char *description) : _pin(pin), _address(address) {
 		_value = 0;
 		_state = LIGHT_OFF;
 		_msg = new MyMessage(_address, V_PERCENTAGE);
-		_description = new char[strlen(description)];
-		strncpy(_description, description, strlen(description));
+		_description[DESC_SIZE] = {0};
+    strncpy(_description, description, sizeof(_description) - 1);
+    _description[sizeof(_description) - 1] = '\0';
 	}
 	void begin() {
 		pinMode(_pin, OUTPUT);
@@ -71,7 +74,10 @@ public:
 	}
 	uint8_t getValue() { return _value; }
 	bool getAddr() { return _address; };
-	void setDescr(const char *description) { strncpy(_description, description, strlen(description)); }
+	void setDescr(const char *description) { 
+    strncpy(_description, description, sizeof(_description) - 1);
+    _description[sizeof(_description) - 1] = '\0';
+    }
 	char * getDescr() { return _description; } 
 
 
@@ -81,5 +87,5 @@ private:
 	uint8_t _value;
 	bool _state;
 	MyMessage* _msg;
-	char *_description;
+	char _description[DESC_SIZE];
 };

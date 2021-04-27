@@ -5,7 +5,7 @@
 #define MY_REPEATER_FEATURE
 
 // Enable debug prints to serial monitor
-//#define MY_DEBUG 
+#define MY_DEBUG 
 
 //#define MY_DEBUG_VERBOSE_RF24
 
@@ -60,7 +60,7 @@
 #endif
 #ifdef CHILD_ID_RELAY4
 #define RELAY4_PIN 34
-#define RELAY1_NAME "Filter"  
+#define RELAY4_NAME "Filter"  
 #endif
 // Lighting channel defenitions
 //#define CHILD_ID_CHANNEL1 10

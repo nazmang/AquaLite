@@ -10,16 +10,16 @@
 const uint16_t wait_interval = 60000;
 
 #ifdef CHILD_ID_RELAY1
-Relay r1(RELAY1_PIN, CHILD_ID_RELAY1,"CO2");
+Relay r1(RELAY1_PIN, CHILD_ID_RELAY1,RELAY1_NAME);
 #endif
 #ifdef CHILD_ID_RELAY2
-Relay r2(RELAY2_PIN, CHILD_ID_RELAY2,"UV Light");
+Relay r2(RELAY2_PIN, CHILD_ID_RELAY2,RELAY2_NAME);
 #endif
 #ifdef CHILD_ID_RELAY3
-Relay r3(RELAY3_PIN, CHILD_ID_RELAY3,"Lighting");
+Relay r3(RELAY3_PIN, CHILD_ID_RELAY3,RELAY3_NAME);
 #endif
 #ifdef CHILD_ID_RELAY4
-Relay r4(RELAY4_PIN, CHILD_ID_RELAY4,"Filter");
+Relay r4(RELAY4_PIN, CHILD_ID_RELAY4,RELAY4_NAME);
 #endif
 
 #ifdef CHILD_ID_CHANNEL1
@@ -168,16 +168,16 @@ void presentation() {
 
 	// Register all sensors to gw (they will be created as child devices)
 #ifdef CHILD_ID_RELAY1	
-	present(CHILD_ID_RELAY1, S_BINARY);
+	present(CHILD_ID_RELAY1, S_BINARY, r1.getDescr());
 #endif	
 #ifdef CHILD_ID_RELAY2	
-	present(CHILD_ID_RELAY2, S_BINARY);
+	present(CHILD_ID_RELAY2, S_BINARY, r2.getDescr());
 #endif	
 #ifdef CHILD_ID_RELAY3	
-	present(CHILD_ID_RELAY3, S_BINARY);
+	present(CHILD_ID_RELAY3, S_BINARY, r3.getDescr());
 #endif	
 #ifdef CHILD_ID_RELAY4	
-	present(CHILD_ID_RELAY4, S_BINARY);
+	present(CHILD_ID_RELAY4, S_BINARY, r4.getDescr());
 #endif	
 
 #ifdef CHILD_ID_CHANNEL1
